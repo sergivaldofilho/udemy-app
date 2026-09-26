@@ -108,11 +108,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install safety bandit
+          pip install safety bandit pip-audit
           pip install -r requirements.txt
 
-      - name: Run Safety (Dependency Vulnerability Check)
-        run: safety scan
+      - name: Run Vulnerability Check (pip-audit)
+        run: pip-audit
+
+      # - name: Run Safety (Dependency Vulnerability Check)
+      #   env:
+      #     SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
+      #   run: safety scan --fail-on any
 
       - name: Run Bandit (Security Linting)
         run: bandit -r . -f json -o bandit-report.json || true
